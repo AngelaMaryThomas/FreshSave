@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+            .navbar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        
+        padding:15px 30px;
+    }
+
+    .left{
+        display:flex;
+        align-items:center;
+        gap:20px;
+    }
+
+    .logo{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .logo img{
+        height:100px;
+        width: 100px;
+    }
+
+    .middle{
+        flex:1;
+        margin:0 30px;
+    }
+
+    .middle input{
+        width:70%;
+        padding:12px;
+        border-radius:10px;
+        border:none;
+        background:#f3f3f3;
+    }
+
+    .right{
+        display:flex;
+        gap:20px;
+    }
+        </style>
+</head>
+<body>
+ <nav class="navbar">
+
+    <div class="left">
+        <div class="logo">
+            <img src="/static/images/logo.png">
+            
+        </div>
+
+        <div class="location">
+            Alleppey ▼
+        </div>
+    </div>
+
+    <div class="middle">
+        <input
+            type="text"
+            placeholder="Search for products..."
+        >
+    </div>
+
+    <div class="right">
+       Login
+       Cart
+
+    </div>
+
+</nav>
+</body>
+</html>
