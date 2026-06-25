@@ -30,24 +30,96 @@
                 <div class="modal-content">
                     <span id="close-btn">&times;</span>
 
-                    <div class="modal-brand">
-                        <span class="leaf-icon">🌿</span>
-                        <span class="brand-name">FreshSave</span>
+                    <div id="login-view">
+                        <div class="modal-brand">
+                            <span class="leaf-icon">🌿</span>
+                            <span class="brand-name">FreshSave</span>
+                        </div>
+
+                        <h2 class="modal-heading">Welcome back</h2>
+
+                        <form action="/signin" method="POST">
+                            <input type="email" name="email" placeholder="Email address">
+
+                            <input type="password" name="password" placeholder="Password">
+
+                            <button type="submit" class="form-signin-btn">Sign in</button>
+                            <p class="signup-text">
+                                Don't have an account?
+                                <a href="#" id="show-signup">Sign up free</a>
+                            </p>
+                        </form>
                     </div>
 
-                    <h2 class="modal-heading">Welcome back</h2>
+                    <div id="signup-view" style="display:none;">
+                        <div class="modal-brand">
+                            <span class="leaf-icon">🌿</span>
+                            <span class="brand-name">FreshSave</span>
+                        </div>
 
-                    <form action="/login" method="POST">
-                        <input type="email" name="email" placeholder="Email address">
+                        <h2 class="modal-heading">Create your account</h2>
 
-                        <input type="password" name="password" placeholder="Password">
+                        <form action="/signup" method="POST" id="signup-form">
+                            <input type="hidden" name="role" id="signup-role" value="customer">
 
-                        <button type="submit" class="form-signin-btn">Sign in</button>
-                        <p class="signup-text">
-                            Don't have an account?
-                            <a href="/signup">Sign up free</a>
-                        </p>
-                    </form>
+                            <div class="role-toggle" id="role-toggle">
+                                <button type="button" class="role-btn active" data-role="customer">Customer</button>
+                                <button type="button" class="role-btn" data-role="owner">Store Owner</button>
+                            </div>
+
+                            <div class="customer-fields">
+                                <input type="text" name="fullname" placeholder=" Name" role="customer">
+                                <input type="email" name="email" placeholder="Email address" role="customer">
+                                <input type="number" name="phone" placeholder="Phone Number" role="customer">
+                                <input type="password" name="password" placeholder="Password"role="customer">
+                            </div>
+
+                            <div class="owner-fields" style="display:none;">
+                                <input type="text" name="Owner name" placeholder="Owner name" >
+                                <input type="email" name="owner_email" placeholder="Email address">
+                                <input type="number" name="phone" placeholder="Phone Number">
+
+                                <input type="password" name="owner_password" placeholder="Password">
+                            </div>
+
+                            <button
+                                type="button"
+                                id="create-account-btn"
+                                class="form-signin-btn">
+                                Create Account
+                            </button>
+                                Already have an account? <a href="#" id="show-login">Sign in</a>
+                            </p>
+                        </form>
+                    </div>
+                        <div id="otp-view" style="display:none;">
+
+                            <div class="modal-brand">
+                                <span class="leaf-icon">🌿</span>
+                                <span class="brand-name">FreshSave</span>
+                            </div>
+
+                            <h2 class="modal-heading">Verify OTP</h2>
+
+                            <input
+                                type="text"
+                                id="otp-input"
+                                placeholder="Enter 6-digit OTP">
+
+                            <button
+                                type="button"
+                                id="verify-otp-btn"
+                                class="form-signin-btn">
+
+                                Verify OTP
+
+                            </button>
+
+                            <p class="signup-text">
+                                OTP sent to your email
+                            </p>
+
+                        </div>
                 </div>
             </div>
         </div>
@@ -100,17 +172,123 @@
 
 </section>
 <script>
-    const signInBtn = document.getElementById("signin-btn");
-    const modal = document.getElementById("login-modal");
-    const closeBtn = document.getElementById("close-btn");
+    
 
-    signInBtn.addEventListener("click", () => {
-        modal.style.display = "flex";
+   
+        const signInBtn = document.getElementById("signin-btn");
+        const modal = document.getElementById("login-modal");
+        const closeBtn = document.getElementById("close-btn");
+
+        const loginView = document.getElementById("login-view");
+        const signupView = document.getElementById("signup-view");
+        const otpView = document.getElementById("otp-view");
+
+        const showSignup = document.getElementById("show-signup");
+        const showLogin = document.getElementById("show-login");
+
+        signInBtn.onclick = () => {
+            modal.style.display = "flex";
+        };
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        };
+
+        showSignup.onclick = (e) => {
+            e.preventDefault();
+            loginView.style.display = "none";
+            signupView.style.display = "block";
+        };
+
+        showLogin.onclick = (e) => {
+            e.preventDefault();
+            signupView.style.display = "none";
+            loginView.style.display = "block";
+        };
+
+        /* Customer / Store Owner Toggle */
+        const roleBtns = document.querySelectorAll(".role-btn");
+
+       
+        const customerFields = document.querySelector(".customer-fields");
+        const ownerFields = document.querySelector(".owner-fields");
+        const roleInput = document.getElementById("signup-role");
+
+        roleBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+
+                roleBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                const role = btn.dataset.role;
+                roleInput.value = role;
+
+                if(role === "customer"){
+                    customerFields.style.display = "block";
+                    ownerFields.style.display = "none";
+                } else {
+                    customerFields.style.display = "none";
+                    ownerFields.style.display = "block";
+                }
+            });
+        });
+                window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+        const signupForm = document.getElementById("signup-form");
+        const createAccountBtn = document.getElementById("create-account-btn");
+        createAccountBtn.addEventListener("click", async () => {
+
+        const formData = new FormData(signupForm);
+
+        const response = await fetch("/signup", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            signupView.style.display = "none";
+            otpView.style.display = "block";
+
+        } else {
+
+            document.getElementById("otp-error").innerText =
+        "Invalid OTP";
+
+        }
+    });
+    const verifyBtn = document.getElementById("verify-otp-btn");
+
+    verifyBtn.addEventListener("click", async () => {
+
+    const otp = document.getElementById("otp-input").value;
+
+    const formData = new FormData();
+    formData.append("otp", otp);
+
+    const response = await fetch("/verify-otp", {
+        method: "POST",
+        body: formData
     });
 
-    closeBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+    const data = await response.json();
+
+    if(data.success){
+
+        alert("Account Created Successfully");
+
+        otpView.style.display = "none";
+        loginView.style.display = "block";
+
+    }else{
+        alert("Invalid OTP");
+    }
+});
 </script>
 </body>
 </html>

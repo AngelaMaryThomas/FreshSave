@@ -99,99 +99,14 @@ body{
     cursor:pointer;
 }
 
-/* MODAL STYLES */
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 40px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    position: relative;
-}
-
-#close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    color: #999;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-#close-btn:hover {
-    color: #333;
-}
-
-.modal-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 30px;
-}
 
 .leaf-icon {
     font-size: 24px;
 }
 
-.brand-name {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-}
 
-.modal-heading {
-    font-size: 32px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 30px;
-    margin-top: 0;
-}
 
-.modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.modal-content input {
-    padding: 14px 16px;
-    border: none;
-    background-color: #f0ebe5;
-    border-radius: 12px;
-    font-size: 14px;
-    color: #333;
-    transition: background-color 0.2s;
-}
-
-.modal-content input::placeholder {
-    color: #999;
-}
-
-.modal-content input:focus {
-    outline: none;
-    background-color: #e8dfd5;
-}
 
 .form-signin-btn {
     padding: 16px;
@@ -349,90 +264,132 @@ body{
     color:#666;
 }
 
+/* MODAL BACKDROP */
 .modal{
     display:none;
     position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-
+    inset:0;
+    background:rgba(0,0,0,0.45);
     justify-content:center;
     align-items:center;
+    z-index:1000;
 }
 
+/* POPUP BOX */
 .modal-content{
-    background:rgb(230, 224, 224);
-    width:430px;
-    padding:40px;
-    border-radius:25px;
+     width:420px;
+     max-width:90%;
+    background:#fff;
+    border-radius:22px;
+    padding:28px;
     position:relative;
-}
-.modal-content h2{
-    color:#222;
-    font-size:30px;
-    margin-bottom:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+     
 }
 
-.modal-content form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+/* CLOSE BUTTON */
+#close-btn{
+    position:absolute;
+    top:18px;
+    right:22px;
+    font-size:28px;
+    color:#444;
+    cursor:pointer;
 }
+
+/* LOGO */
+.modal-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.brand-name{
+    color:#1f6b3d;
+    font-size:18px;
+    font-weight:700;
+    font-family:Georgia, serif;
+}
+
+/* HEADING */
+.modal-heading{
+    color:#222;
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:22px;
+    font-family:Georgia, serif;
+}
+
+/* INPUTS */
 .modal-content input{
     width:100%;
-    padding:16px;
+    padding:15px 18px;
     border:none;
-    border-radius:12px;
-    background:#f4efe5;
-    font-size:16px;
+    border-radius:14px;
+    background:#f2ede3;
+    font-size:15px;
+    margin-bottom:12px;
 }
-.modal-content button{
+
+.modal-content input:focus{
+    outline:none;
+}
+
+/* GREEN BUTTON */
+.form-signin-btn{
     width:100%;
     padding:16px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#1f6b3d;
     color:white;
     font-size:18px;
-    font-weight:bold;
+    font-weight:600;
+    margin-top:8px;
     cursor:pointer;
 }
-#close-btn{
-    position:absolute;
-    top:20px;
-    right:25px;
-    font-size:28px;
-    cursor:pointer;
-    color:#444;
-}
-.modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100vh;
-    background:rgba(0,0,0,0.5);
 
-    justify-content:center;
-    align-items:center;
-
-    z-index:1000;
-}
+/* BOTTOM TEXT */
 .signup-text{
     text-align:center;
-    margin-top:15px;
-    color:#666;
+    margin-top:18px;
+    color:#777;
     font-size:15px;
 }
 
 .signup-text a{
     color:#1f6b3d;
+    font-weight:700;
     text-decoration:none;
-    font-weight:bold;
 }
+
+/* CUSTOMER / OWNER TOGGLE */
+.role-toggle{
+    background:#f2ede3;
+    border-radius:14px;
+    padding:3px;
+    display:flex;
+    margin-bottom:18px;
+}
+
+.role-btn{
+    flex:1;
+    padding:12px;
+    border:none;
+    background:transparent;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    color:#666;
+}
+
+.role-btn.active{
+    background:white;
+    border:1px solid #444;
+    color:#222;
+}
+
 
 .signup-text a:hover{
     text-decoration:underline;
