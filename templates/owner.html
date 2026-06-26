@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshSave Owner Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='owner.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="owner-navbar">
+
+    <div class="logo">
+        🍃 <span>FreshSave</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Dashboard</a>
+        <a href="#">Products</a>
+        <a href="#">Orders</a>
+        <a href="#">Analytics</a>
+    </div>
+
+    <div class="nav-right">
+
+        <button class="owner-profile">
+            <i class="fa-solid fa-user"></i>
+            {{ user_name }}
+        </button>
+
+        <a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- ================= PAGE ================= -->
+
+<div class="owner-container">
+
+    <div class="dashboard-header">
+
+        <h1>Welcome back, {{ user_name }} 👋</h1>
+
+        <p>Manage your products and reduce food waste.</p>
+
+    </div>
+
+    <!-- ================= STATS ================= -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-box"></i>
+
+            <h2>{{ total_products }}</h2>
+
+            <p>Active Listings</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <h2>{{ today_orders }}</h2>
+
+            <p>Orders Today</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h2>₹{{ revenue }}</h2>
+
+            <p>Revenue</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            <h2>{{ food_saved }} kg</h2>
+
+            <p>Food Saved</p>
+
+        </div>
+
+    </div>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="dashboard-content">
+
+        <!-- LEFT -->
+
+        <section class="left-panel">
+
+            <div class="card">
+
+                <h2>
+                    <i class="fa-solid fa-plus"></i>
+                    List New Product
+                </h2>
+
+                <form action="/add_product"
+                      method="POST"
+                      enctype="multipart/form-data">
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Product Name"
+                        required>
+
+                    <select name="category">
+
+                        <option>Dairy</option>
+
+                        <option>Bakery</option>
+
+                        <option>Produce</option>
+
+                        <option>Meat</option>
+
+                    </select>
+
+                    <div class="two-columns">
+
+                        <input
+                            type="number"
+                            name="original_price"
+                            placeholder="Original Price">
+
+                        <input
+                            type="number"
+                            name="discount_price"
+                            placeholder="Discount Price">
+
+                    </div>
+
+                    <div class="two-columns">
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            placeholder="Quantity">
+
+                        <input
+                            type="date"
+                            name="expiry_date">
+
+                    </div>
+
+                    <textarea
+                        name="description"
+                        placeholder="Describe the product..."></textarea>
+
+                    <input
+                        type="file"
+                        name="image">
+
+                    <button type="submit" class="green-btn">
+
+                        <i class="fa-solid fa-upload"></i>
+
+                        List Product
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT -->
+
+        <section class="right-panel">
+
+            <div class="card">
+
+                <h2>
+                    <i class="fa-solid fa-box-open"></i>
+                    Current Listings
+                </h2>
+
+                <div class="listing-container">
+
+                    {% for product in products %}
+
+                    <div class="listing-card">
+
+                        <img src="{{ url_for('static', filename='images/' + product.image) }}">
+
+                        <div class="listing-info">
+
+                            <h3>{{ product.name }}</h3>
+
+                            <p>{{ product.category }}</p>
+
+                            <small>
+                                {{ product.quantity }} in stock
+                            </small>
+
+                        </div>
+
+                    <div class="listing-price">
+
+                        <h3>₹{{ product.discount_price }}</h3>
+
+                        <small>₹{{ product.original_price }}</small>
+
+                        <button class="delete-product-btn"
+                                onclick="deleteProduct({{ product.id }})">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </button>
+
+                    </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='owner.js') }}"></script>
+
+</body>
+</html>

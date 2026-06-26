@@ -4,83 +4,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-            .navbar{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        
-        padding:15px 30px;
-    }
-
-    .left{
-        display:flex;
-        align-items:center;
-        gap:20px;
-    }
-
-    .logo{
-        display:flex;
-        align-items:center;
-        gap:10px;
-    }
-
-    .logo img{
-        height:100px;
-        width: 100px;
-    }
-
-    .middle{
-        flex:1;
-        margin:0 30px;
-    }
-
-    .middle input{
-        width:70%;
-        padding:12px;
-        border-radius:10px;
-        border:none;
-        background:#f3f3f3;
-    }
-
-    .right{
-        display:flex;
-        gap:20px;
-    }
-        </style>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
- <nav class="navbar">
+     <nav class="navbar">
 
-    <div class="left">
         <div class="logo">
-            <img src="/static/images/logo.png">
+            🍃 FreshSave
+        </div>
+
+        <div class="nav-links">
+            <a href="#">Browse Deals</a>
+            <a href="#">For Stores</a>
+        </div>
+
+        <div class="nav-buttons">
             
+
+            <button class="cart-btn" onclick="openCart()">
+                🛒 Cart
+                <span id="cartCount" class="cart-count">0</span>
+            </button>
+
+            <button class="profile-btn">
+                👤 {{ user_name }}
+            </button>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+            <div class="modal" id="login-modal">
+                <div class="modal-content">
+                    <span id="close-btn">&times;</span>
+
+                    <div id="login-view">
+                        <div class="modal-brand">
+                            <span class="leaf-icon">🌿</span>
+                            <span class="brand-name">FreshSave</span>
+                        </div>
+
+                        <h2 class="modal-heading">Welcome back</h2>
+
+                        <form action="/signin" method="POST">
+                            <input type="email" name="email" placeholder="Email address">
+
+                            <input type="password" name="password" placeholder="Password">
+
+                            <button type="submit" class="form-signin-btn">Sign in</button>
+                            <p class="signup-text">
+                                Don't have an account?
+                                <a href="#" id="show-signup">Sign up free</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    
+                </div>
+            </div>
         </div>
 
-        <div class="location">
-            Alleppey ▼
+    </nav>
+        <section class="browse-header">
+        <h1>Browse Deals</h1>
+        <p>Find the best near-expiry discounts near you</p>
+        </section>
+           
+
+            <div class="customer-layout">
+            <aside class="sidebar">
+
+                <h3>Filters</h3>
+
+                <h4>Category</h4>
+
+                <button>All</button>
+                <button>Dairy</button>
+                <button>Bakery</button>
+                <button>Produce</button>
+                <button>Meat</button>
+
+                <h4>Expiry Window</h4>
+
+                <button>Expires Today</button>
+                <button>Within 2 Days</button>
+                <button>Within 1 Week</button>
+
+            </aside>
+
+        <main class="main-content">
+
+                <div class="top-bar">
+
+                <input
+                    type="text"
+                    placeholder="Search products...">
+
+                <select>
+
+                    <option>Biggest Discount</option>
+
+                    <option>Nearest Expiry</option>
+
+                    <option>Price Low to High</option>
+
+                </select>
+
+            </div>
+            <p class="product-count">
+
+            {{ products|length }} products found
+
+            </p>
+            <div class="products-grid">
+
+            {% for product in products %}
+            <div class="product-card"
+                    data-id="{{ product.id }}"
+                    data-name="{{ product.name }}"
+                    data-category="{{ product.category }}"
+                    data-image="{{ url_for('static', filename='images/' + product.image) }}"
+                    data-price="{{ product.discount_price }}"
+                    data-original="{{ product.original_price }}"
+                    data-expiry="{% if product.days_left == 0 %}Expires Today{% elif product.days_left == 1 %}Expires Tomorrow{% else %}Expires in {{ product.days_left }} days{% endif %}"
+                    data-quantity="{{ product.quantity }}"
+                    data-discount="{{ product.discount }}"
+                    onclick="openProduct(this)">
+                     <div class="discount-badge">
+                        {{ product.discount }}% OFF
+                    </div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/' + product.image) }}"
+                        alt="{{ product.name }}">
+                </div>
+
+            <div class="product-details">
+
+                <span class="category">{{ product.category }}</span>
+
+                <h3>{{ product.name }}</h3>
+
+                 <p class="expiry">
+                    {% if product.days_left == 0 %}
+                        Expires Today
+                    {% elif product.days_left == 1 %}
+                        Expires Tomorrow
+                    {% else %}
+                        Expires in {{ product.days_left }} days
+                    {% endif %}
+                </p>
+
+                <div class="price-section">
+
+                    <span class="discount-price">
+                        ₹{{ product.discount_price }}
+                    </span>
+
+                    <span class="original-price">
+                        ₹{{ product.original_price }}
+                    </span>
+
+                </div>
+
+                <p class="quantity">
+                    {{ product.quantity }} left
+                </p>
+
+                <button class="add-btn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+Add to Cart
+                </button>
+
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+            </div>
+        
+
+        </main>
+
+</div>
+<div id="productModal" class="product-modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeProduct()">&times;</span>
+        <div class="modal-image">
+            <img id="modalImage">
+            <div id="modalDiscount" class="modal-discount"></div>
+        </div>
+        <div class="modal-details">
+            <h2 id="modalName"></h2>
+            <p id="modalCategory"></p>
+            <p id="modalExpiry"></p>
+            <div class="modal-price">
+                <span id="modalPrice"></span>
+                <span id="modalOriginal"></span>
+            </div>
+            <p id="modalQuantity"></p>
+            <div class="qty-row">
+
+                <button type="button" onclick="decreaseQty()">
+                    -
+                </button>
+
+                <span id="quantityValue">
+                    1
+                </span>
+
+                <button type="button" onclick="increaseQty()">
+                    +
+                </button>
+
+            </div>
+            <button class="modal-cart-btn" onclick="addToCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Add to Cart
+            </button>
         </div>
     </div>
+</div>
+<div id="cartPanel" class="cart-panel">
 
-    <div class="middle">
-        <input
-            type="text"
-            placeholder="Search for products..."
-        >
+    <div class="cart-header">
+        <h2>Your Cart</h2>
+
+        <span onclick="closeCart()">&times;</span>
     </div>
 
-    <div class="right">
-       Login
-       Cart
+    <div id="cartItems"></div>
+
+        <div class="cart-footer">
+
+            <div class="saving-box">
+
+                🍃 You're saving
+
+                <span id="savingAmount">
+                    ₹120
+                </span>
+
+            </div>
+
+            <div class="total-row">
+
+                <span>Total</span>
+
+                <span id="cartTotal">
+                    ₹0
+                </span>
+
+            </div>
+            <button class="checkout-btn" onclick="placeOrder()">
+                Place Order →
+            </button>
 
     </div>
+    
 
-</nav>
+</div>
+<script src="{{ url_for('static', filename='new.js') }}"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 </html>
